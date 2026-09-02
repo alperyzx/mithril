@@ -1,0 +1,41 @@
+{
+  "team": {
+    "name": "mithril",
+    "repository": "ao-hackathon-2026-mithril",
+    "members": [
+      "Alper",
+      "Altan",
+      "Yiğit"
+    ]
+  },
+  "project": {
+    "title": "ao-hackathon-2026-mithril",
+    "one_liner": "Operasyonel gürültüyü anlamlı sinyallere dönüştüren ve aksiyon takibini kolaylaştıran prototip.",
+    "problem": "Hackathon senaryosunda gürültü içinden karar üretilebilir sinyal çıkarmak",
+    "status": "skeleton"
+  },
+  "runtime": {
+    "setup": "TBD",
+    "run_command": "make run"
+  },
+  "ai": {
+    "tools": [
+      {
+        "name": "Claude SAKA",
+        "model": "TBD"
+      },
+      {
+        "name": "GitHub Copilot/Codex",
+        "model": "TBD"
+      }
+    ]
+  },
+  "integrations": {
+    "mcp_servers": [],
+    "apis": []
+  },
+  "delivery": {
+    "public_repo_required": true,
+    "deploy_url": "TBD"
+  }
+}
