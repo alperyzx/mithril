@@ -1,0 +1,278 @@
+{
+  "timestamp": "2026-09-16T14:14:30.944507",
+  "project": "ao-hackathon-2026-mithril",
+  "compliance": {
+    "total_checks": 45,
+    "passed": 37,
+    "failed": 8,
+    "percentage": 82.2
+  },
+  "categories": {
+    "Belgelendirme ve Hazırlık": [
+      {
+        "rule": "README: Proje adı ve tek cümlelik özet",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "README: Çözdüğünüz problem",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "README: Çözümünüzün nasıl çalıştığı",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "README: Kurulum adımları",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "README: Çalıştırma komutu",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "README: Kullanılan tüm AI araçları",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "README: MCP sunucu listesi",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "README: Entegre edilen API'ler",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "README: Ekran görüntüleri",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "README: Deploy URL ve bilinen sınırlar",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "README: Takım",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "submission.json: Takım adı",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "submission.json: Takım üyeleri",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "submission.json: Proje başlığı",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "submission.json: Bir cümlede özet",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "submission.json: Problem tanımı",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "submission.json: Proje durumu",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "submission.json: Kurulum komutu",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "submission.json: Çalıştırma komutu",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "submission.json: AI araçları",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "submission.json: Depo zorunluluğu",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "submission.json: Deploy URL",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "AI_JURI.md: Problem Tanımı",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "AI_JURI.md: Çözüm Özeti",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "AI_JURI.md: Mimari",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "AI_JURI.md: AI Kullanımı",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "AI_JURI.md: Değerlendirme Kontrol Listesi",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "AI_JURI.md: Bilinen Sınırlar",
+        "passed": true,
+        "details": ""
+      }
+    ],
+    "Teknik Gerçeklik": [
+      {
+        "rule": ".git/ var (git reposu)",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": ".gitignore kapsamlı",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": ".env.example var",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "src/ klasörü var",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "src/README.md var",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "tests/ klasörü var",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "En az 1 test dosyası",
+        "passed": false,
+        "details": "Test dosyası bulunamadı"
+      },
+      {
+        "rule": "docs/ klasörü var",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "Makefile var",
+        "passed": false,
+        "details": "Makefile bulunamadı"
+      }
+    ],
+    "AI Kullanımı ve Şeffaflık": [
+      {
+        "rule": "Her AI aracı için model sürümü",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "prompts/ klasöründe örnek prompt var",
+        "passed": false,
+        "details": "Prompt dosyası bulunamadı"
+      }
+    ],
+    "Demo ve Deliverables": [
+      {
+        "rule": "demo/ klasörü var",
+        "passed": true,
+        "details": ""
+      },
+      {
+        "rule": "En az 1 ekran görüntüsü",
+        "passed": false,
+        "details": "Görüntü dosyası bulunamadı"
+      }
+    ]
+  },
+  "passed_items": [
+    "✓ Belgelendirme ve Hazırlık: README: Proje adı ve tek cümlelik özet",
+    "✓ Belgelendirme ve Hazırlık: README: Çözdüğünüz problem",
+    "✓ Belgelendirme ve Hazırlık: README: Çözümünüzün nasıl çalıştığı",
+    "✓ Belgelendirme ve Hazırlık: README: Kurulum adımları",
+    "✓ Belgelendirme ve Hazırlık: README: Çalıştırma komutu",
+    "✓ Belgelendirme ve Hazırlık: README: Kullanılan tüm AI araçları",
+    "✓ Belgelendirme ve Hazırlık: README: MCP sunucu listesi",
+    "✓ Belgelendirme ve Hazırlık: README: Entegre edilen API'ler",
+    "✓ Belgelendirme ve Hazırlık: README: Ekran görüntüleri",
+    "✓ Belgelendirme ve Hazırlık: README: Deploy URL ve bilinen sınırlar",
+    "✓ Belgelendirme ve Hazırlık: README: Takım",
+    "✓ Belgelendirme ve Hazırlık: submission.json: Takım adı",
+    "✓ Belgelendirme ve Hazırlık: submission.json: Takım üyeleri",
+    "✓ Belgelendirme ve Hazırlık: submission.json: Proje başlığı",
+    "✓ Belgelendirme ve Hazırlık: submission.json: Bir cümlede özet",
+    "✓ Belgelendirme ve Hazırlık: submission.json: Problem tanımı",
+    "✓ Belgelendirme ve Hazırlık: submission.json: Proje durumu",
+    "✓ Belgelendirme ve Hazırlık: submission.json: Kurulum komutu",
+    "✓ Belgelendirme ve Hazırlık: submission.json: Çalıştırma komutu",
+    "✓ Belgelendirme ve Hazırlık: submission.json: AI araçları",
+    "✓ Belgelendirme ve Hazırlık: submission.json: Depo zorunluluğu",
+    "✓ Belgelendirme ve Hazırlık: submission.json: Deploy URL",
+    "✓ Belgelendirme ve Hazırlık: AI_JURI.md: Problem Tanımı",
+    "✓ Belgelendirme ve Hazırlık: AI_JURI.md: Çözüm Özeti",
+    "✓ Belgelendirme ve Hazırlık: AI_JURI.md: Mimari",
+    "✓ Belgelendirme ve Hazırlık: AI_JURI.md: AI Kullanımı",
+    "✓ Belgelendirme ve Hazırlık: AI_JURI.md: Değerlendirme Kontrol Listesi",
+    "✓ Belgelendirme ve Hazırlık: AI_JURI.md: Bilinen Sınırlar",
+    "✓ Teknik Gerçeklik: .git/ var (git reposu)",
+    "✓ Teknik Gerçeklik: .gitignore kapsamlı",
+    "✓ Teknik Gerçeklik: .env.example var",
+    "✓ Teknik Gerçeklik: src/ klasörü var",
+    "✓ Teknik Gerçeklik: src/README.md var",
+    "✓ Teknik Gerçeklik: tests/ klasörü var",
+    "✓ Teknik Gerçeklik: docs/ klasörü var",
+    "✓ AI Kullanımı ve Şeffaflık: Her AI aracı için model sürümü",
+    "✓ Demo ve Deliverables: demo/ klasörü var"
+  ],
+  "failed_items": [
+    "✗ Teknik Gerçeklik: En az 1 test dosyası",
+    "  → Test dosyası bulunamadı",
+    "✗ Teknik Gerçeklik: Makefile var",
+    "  → Makefile bulunamadı",
+    "✗ AI Kullanımı ve Şeffaflık: prompts/ klasöründe örnek prompt var",
+    "  → Prompt dosyası bulunamadı",
+    "✗ Demo ve Deliverables: En az 1 ekran görüntüsü",
+    "  → Görüntü dosyası bulunamadı"
+  ],
+  "warnings": [
+    "Makefile bulunamadı - 'make run' komutunun çalışabilirliği doğrulanamadı"
+  ],
+  "status": "⚠ 82.22222222222221% COMPLIANCE"
+}
