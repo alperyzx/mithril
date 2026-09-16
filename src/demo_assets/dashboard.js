@@ -1,4 +1,3 @@
-const statusLabels = { open: "Açık", in_progress: "Çalışılıyor", blocked: "Engelli", resolved: "Çözüldü" };
 const reasonLabels = {
   isolated_low_severity: "İzole düşük şiddet",
   no_topology_evidence: "Topoloji kanıtı yok",
@@ -11,21 +10,13 @@ const formatTime = (value) => new Intl.DateTimeFormat("tr-TR", { hour: "2-digit"
 const setText = (selector, text) => document.querySelector(selector).textContent = text;
 const statusClass = (status) => `status status-${status}`;
 
-function appendTimelineItem(list, title, detail) {
-  const item = document.createElement("li");
-  const heading = document.createElement("b");
-  const description = document.createElement("span");
-  heading.textContent = title;
-  description.textContent = detail;
-  item.append(heading, description);
-  list.append(item);
-}
+const countList = (title, values) => `<div><b>${title}</b><ul>${Object.entries(values).map(([name, count]) => `<li>${name}: <strong>${count}</strong></li>`).join("")}</ul></div>`;
 
 function renderCard(card) {
   const node = document.getElementById("card-template").content.firstElementChild.cloneNode(true);
   node.dataset.incidentId = card.incident_id;
   node.querySelector(".priority").textContent = card.priority;
-  node.querySelector(".confidence").textContent = `${card.confidence} güven`;
+  node.querySelector(".confidence").textContent = card.priority === "P1" ? "S5 kritik alarm" : "S4 büyük alarm";
   node.querySelector("h3").textContent = card.incident_id;
   node.querySelector(".time-range").textContent = `${formatTime(card.start_at)} — ${formatTime(card.end_at)} · ${card.alarm_count} alarm`;
   node.querySelector(".hypothesis p").textContent = card.root_cause_hypothesis;
@@ -39,13 +30,7 @@ function renderCard(card) {
   node.querySelector(".recommended-action p").textContent = card.recommended_first_action;
   node.querySelector(".owner").textContent = `Sahip: ${card.action_owner}`;
   const status = node.querySelector(".status");
-  status.className = statusClass(card.action_status); status.textContent = statusLabels[card.action_status];
-  const timeline = node.querySelector(".card-timeline");
-  appendTimelineItem(timeline, "Olay tespit edildi", formatTime(card.start_at));
-  for (const entry of card.action_history || []) {
-    const detail = entry.at ? formatTime(entry.at) : entry.note;
-    appendTimelineItem(timeline, `Aksiyon: ${statusLabels[entry.status]}`, detail);
-  }
+  status.className = statusClass(card.action_status); status.textContent = "Açık";
   return node;
 }
 
@@ -57,7 +42,7 @@ function render() {
   setText("#noise-count", noise_total.toLocaleString("tr-TR"));
   setText("#reduction", `%${(noise_total / input_alarm_count * 100).toFixed(1).replace(".", ",")}`);
   const cards = document.getElementById("cards"); cards.replaceChildren(...incident_cards.map(renderCard));
-  const selection = document.getElementById("action-card"); selection.replaceChildren(...incident_cards.map(card => new Option(`${card.incident_id} · ${card.action_owner}`, card.incident_id)));
+  const selection = document.getElementById("evidence-card"); selection.replaceChildren(...incident_cards.map(card => new Option(`${card.incident_id} · ${card.root_cause_hypothesis}`, card.incident_id)));
   const reasons = document.getElementById("noise-reasons");
   reasons.replaceChildren(...Object.entries(noise_summary).map(([reason, count]) => {
     const row = document.createElement("div"); row.innerHTML = `<span>${reasonLabels[reason] || reason}</span><strong>${count.toLocaleString("tr-TR")}</strong>`; return row;
@@ -70,21 +55,19 @@ async function load() {
   dashboard = await response.json(); render();
 }
 
-document.getElementById("update-action").addEventListener("click", async () => {
-  const incidentId = document.getElementById("action-card").value;
-  const status = document.getElementById("action-status").value;
-  const feedback = document.getElementById("action-feedback");
+document.getElementById("load-evidence").addEventListener("click", async () => {
+  const incidentId = document.getElementById("evidence-card").value;
+  const feedback = document.getElementById("evidence-feedback");
+  const result = document.getElementById("evidence-result");
   try {
-    const response = await fetch(`/api/cards/${encodeURIComponent(incidentId)}/action`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ status }) });
-    if (!response.ok) throw new Error("Update failed");
-    const result = await response.json();
-    const card = dashboard.incident_cards.find(card => card.incident_id === result.incident_id);
-    card.action_status = result.action_status;
-    card.action_history = result.action_history;
-    render(); document.getElementById("action-card").value = incidentId;
-    feedback.textContent = `${incidentId} aksiyonu “${statusLabels[result.action_status]}” durumuna alındı.`;
+    const response = await fetch(`/api/evidence/${encodeURIComponent(incidentId)}`);
+    if (!response.ok) throw new Error("Evidence load failed");
+    const evidence = await response.json();
+    result.hidden = false;
+    result.innerHTML = `<p><strong>${evidence.raw_alarm_count}</strong> ham alarm · ${formatTime(evidence.window.start_at)} — ${formatTime(evidence.window.end_at)}</p><div class="evidence-grid">${countList("Alarm türleri", evidence.alarm_type_counts)}${countList("Servisler", evidence.service_counts)}${countList("Kaynak sistemler", evidence.source_system_counts)}</div><details><summary>İlk 12 ham alarmı göster</summary><table><thead><tr><th>Saat</th><th>Servis</th><th>Host</th><th>Tip</th><th>S</th></tr></thead><tbody>${evidence.sample_alarms.map(alarm => `<tr><td>${formatTime(alarm.timestamp)}</td><td>${alarm.service}</td><td>${alarm.host}</td><td>${alarm.alarm_type}</td><td>${alarm.severity}</td></tr>`).join("")}</tbody></table></details>`;
+    feedback.textContent = `${incidentId} hipotezi, ilgili ham alarm verisiyle yüklendi.`;
   } catch {
-    feedback.textContent = "Durum güncellenemedi. Sunucunun çalıştığını kontrol edin.";
+    feedback.textContent = "Ham veri yüklenemedi. Sunucunun çalıştığını kontrol edin.";
   }
 });
 

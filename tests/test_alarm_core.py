@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 
 from src.alarm_core import analyze
+from src.demo_server import DemoState
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -46,6 +47,16 @@ class DeterministicAlarmCoreTests(unittest.TestCase):
         for incident_id, expected_text in expected.items():
             self.assertIn(expected_text, self.cards[incident_id]["root_cause_hypothesis"])
             self.assertGreater(self.cards[incident_id]["alarm_count"], 10)
+
+    def test_every_card_has_raw_alarm_evidence(self) -> None:
+        state = DemoState()
+        for card in state.dashboard()["incident_cards"]:
+            evidence = state.evidence(card["incident_id"])
+            self.assertGreater(evidence["raw_alarm_count"], 0)
+            self.assertTrue(evidence["alarm_type_counts"])
+            self.assertTrue(evidence["service_counts"])
+            self.assertTrue(evidence["source_system_counts"])
+            self.assertLessEqual(len(evidence["sample_alarms"]), 12)
 
 
 if __name__ == "__main__":

@@ -31,21 +31,15 @@
       <section id="cards" class="cards" aria-live="polite"></section>
 
       <section class="lower-grid">
-        <article class="panel action-panel">
-          <p class="eyebrow">CANLI AKSİYON TAKİBİ</p>
-          <h2>Bir kartın durumunu güncelle</h2>
-          <p>Demo sırasında seçili olayın ilk aksiyonunu açın, çalışmaya alın veya çözün. Durum yalnızca bu yerel oturumda bellekte tutulur.</p>
-          <label for="action-card">Olay kartı</label>
-          <select id="action-card"></select>
-          <label for="action-status">Aksiyon durumu</label>
-          <select id="action-status">
-            <option value="open">Açık</option>
-            <option value="in_progress">Çalışılıyor</option>
-            <option value="blocked">Engelli</option>
-            <option value="resolved">Çözüldü</option>
-          </select>
-          <button id="update-action" type="button">Durumu güncelle <span>→</span></button>
-          <p id="action-feedback" class="feedback" role="status"></p>
+        <article class="panel evidence-panel">
+          <p class="eyebrow">HAM VERİYLE HİPOTEZ DOĞRULAMA</p>
+          <h2>Kanıtları ham alarmlarda incele</h2>
+          <p>Bir olay kartı seçin; ilgili zaman penceresindeki ham alarmlar, alarm türleri, servisler ve kaynak sistemleri hipotezi doğrulamak için gösterilir.</p>
+          <label for="evidence-card">Olay kartı</label>
+          <select id="evidence-card"></select>
+          <button id="load-evidence" type="button">Ham veriyi doğrula <span>→</span></button>
+          <p id="evidence-feedback" class="feedback" role="status"></p>
+          <div id="evidence-result" class="evidence-result" hidden></div>
         </article>
         <article class="panel noise-panel">
           <p class="eyebrow">GÜRÜLTÜ DENETİM İZİ</p>
@@ -63,7 +57,7 @@
         <div class="hypothesis"><span>KÖK NEDEN HİPOTEZİ</span><p></p></div>
         <div class="alternative"><span>ALTERNATİF</span><p></p></div>
         <div class="detail-grid"><div><span>ETKİLENEN SERVİSLER</span><ul class="services"></ul></div><div><span>KANITLAR</span><ul class="evidence"></ul></div></div>
-        <div class="recommended-action"><span>İLK AKSİYON</span><p></p><footer><b class="owner"></b><em class="status"></em></footer><div class="timeline"><span>OLAY VE AKSİYON ZAMAN ÇİZELGESİ</span><ol class="card-timeline"></ol></div></div>
+        <div class="recommended-action"><span>İLK AKSİYON</span><p></p><footer><b class="owner"></b><em class="status"></em></footer></div>
       </article>
     </template>
     <script src="/dashboard.js"></script>

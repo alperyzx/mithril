@@ -6,48 +6,31 @@ from __future__ import annotations
 import argparse
 import json
 import mimetypes
-from datetime import datetime, timezone
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
-from src.alarm_core import analyze
+from src.alarm_core import analyze, load_scenario
 
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSET_ROOT = Path(__file__).resolve().parent / "demo_assets"
 DATA_DIR = ROOT / "docs" / "project" / "senaryo"
-VALID_ACTION_STATUSES = ("open", "in_progress", "blocked", "resolved")
 
 
 class DemoState:
-    """Keeps the deterministic report and demo-only action state in memory."""
+    """Keeps deterministic correlation results and raw-data evidence in memory."""
 
     def __init__(self) -> None:
         self.report = analyze(DATA_DIR)
-        self.action_statuses = {
-            card["incident_id"]: card["action_status"]
-            for card in self.report["incident_cards"]
-        }
-        self.action_history = {
-            card["incident_id"]: [
-                {
-                    "status": "open",
-                    "at": None,
-                    "note": "Demo başlangıcı",
-                }
-            ]
-            for card in self.report["incident_cards"]
-        }
+        self.alarms, _, self.dependencies = load_scenario(DATA_DIR)
 
     def dashboard(self) -> dict[str, Any]:
         cards = []
         for card in self.report["incident_cards"]:
             rendered = dict(card)
-            rendered["action_status"] = self.action_statuses[card["incident_id"]]
-            rendered["action_history"] = self.action_history[card["incident_id"]]
             cards.append(rendered)
         return {
             "input_alarm_count": self.report["input_alarm_count"],
@@ -58,22 +41,40 @@ class DemoState:
             "noise_total": sum(self.report["noise_summary"].values()),
         }
 
-    def update_action(self, incident_id: str, status: str) -> dict[str, str]:
-        if incident_id not in self.action_statuses:
+    def evidence(self, incident_id: str) -> dict[str, Any]:
+        card = next((item for item in self.report["incident_cards"] if item["incident_id"] == incident_id), None)
+        if card is None:
             raise KeyError(incident_id)
-        if status not in VALID_ACTION_STATUSES:
-            raise ValueError(status)
-        self.action_statuses[incident_id] = status
-        entry = {
-            "status": status,
-            "at": datetime.now(timezone.utc).isoformat(),
-            "note": "Operatör tarafından güncellendi",
-        }
-        self.action_history[incident_id].append(entry)
+        rows = [
+            alarm for alarm in self.alarms
+            if card["start_at"] <= alarm["timestamp"] <= card["end_at"]
+            and alarm["service"] in card["affected_services"]
+        ]
+        rows.sort(key=lambda alarm: alarm["timestamp"])
+        type_counts: dict[str, int] = {}
+        service_counts: dict[str, int] = {}
+        source_counts: dict[str, int] = {}
+        for alarm in rows:
+            type_counts[alarm["alarm_type"]] = type_counts.get(alarm["alarm_type"], 0) + 1
+            service_counts[alarm["service"]] = service_counts.get(alarm["service"], 0) + 1
+            source_counts[alarm["source_system"]] = source_counts.get(alarm["source_system"], 0) + 1
         return {
             "incident_id": incident_id,
-            "action_status": status,
-            "action_history": self.action_history[incident_id],
+            "window": {"start_at": card["start_at"], "end_at": card["end_at"]},
+            "raw_alarm_count": len(rows),
+            "alarm_type_counts": dict(sorted(type_counts.items(), key=lambda item: (-item[1], item[0]))),
+            "service_counts": dict(sorted(service_counts.items(), key=lambda item: (-item[1], item[0]))),
+            "source_system_counts": dict(sorted(source_counts.items(), key=lambda item: (-item[1], item[0]))),
+            "sample_alarms": [
+                {
+                    "timestamp": alarm["timestamp"],
+                    "service": alarm["service"],
+                    "host": alarm["host"],
+                    "severity": alarm["severity"],
+                    "alarm_type": alarm["alarm_type"],
+                }
+                for alarm in rows[:12]
+            ],
         }
 
 
@@ -104,6 +105,13 @@ def make_handler(state: DemoState) -> type[BaseHTTPRequestHandler]:
             if path == "/api/dashboard":
                 self._send_json(state.dashboard())
                 return
+            if path.startswith("/api/evidence/"):
+                incident_id = path.removeprefix("/api/evidence/")
+                try:
+                    self._send_json(state.evidence(incident_id))
+                except KeyError:
+                    self._send_json({"error": "Olay kartı bulunamadı."}, HTTPStatus.NOT_FOUND)
+                return
             if path == "/":
                 path = "/index.html"
             if path not in {"/index.html", "/dashboard.css", "/dashboard.js"}:
@@ -112,26 +120,6 @@ def make_handler(state: DemoState) -> type[BaseHTTPRequestHandler]:
             asset = ASSET_ROOT / path.lstrip("/")
             content_type = mimetypes.guess_type(asset.name)[0] or "application/octet-stream"
             self._send(asset.read_bytes(), f"{content_type}; charset=utf-8")
-
-        def do_POST(self) -> None:  # noqa: N802 - required by BaseHTTPRequestHandler
-            prefix = "/api/cards/"
-            suffix = "/action"
-            path = urlparse(self.path).path
-            if not (path.startswith(prefix) and path.endswith(suffix)):
-                self._send_json({"error": "Bulunamadı."}, HTTPStatus.NOT_FOUND)
-                return
-            incident_id = path[len(prefix):-len(suffix)].strip("/")
-            try:
-                length = int(self.headers.get("Content-Length", "0"))
-                payload = json.loads(self.rfile.read(length).decode("utf-8"))
-                result = state.update_action(incident_id, payload["status"])
-            except (json.JSONDecodeError, KeyError, ValueError):
-                self._send_json(
-                    {"error": "Geçerli bir kart ve durum gönderin."},
-                    HTTPStatus.BAD_REQUEST,
-                )
-                return
-            self._send_json(result)
 
     return DemoHandler
 
