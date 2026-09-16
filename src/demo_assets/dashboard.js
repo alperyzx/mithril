@@ -11,6 +11,16 @@ const formatTime = (value) => new Intl.DateTimeFormat("tr-TR", { hour: "2-digit"
 const setText = (selector, text) => document.querySelector(selector).textContent = text;
 const statusClass = (status) => `status status-${status}`;
 
+function appendTimelineItem(list, title, detail) {
+  const item = document.createElement("li");
+  const heading = document.createElement("b");
+  const description = document.createElement("span");
+  heading.textContent = title;
+  description.textContent = detail;
+  item.append(heading, description);
+  list.append(item);
+}
+
 function renderCard(card) {
   const node = document.getElementById("card-template").content.firstElementChild.cloneNode(true);
   node.dataset.incidentId = card.incident_id;
@@ -30,6 +40,12 @@ function renderCard(card) {
   node.querySelector(".owner").textContent = `Sahip: ${card.action_owner}`;
   const status = node.querySelector(".status");
   status.className = statusClass(card.action_status); status.textContent = statusLabels[card.action_status];
+  const timeline = node.querySelector(".card-timeline");
+  appendTimelineItem(timeline, "Olay tespit edildi", formatTime(card.start_at));
+  for (const entry of card.action_history || []) {
+    const detail = entry.at ? formatTime(entry.at) : entry.note;
+    appendTimelineItem(timeline, `Aksiyon: ${statusLabels[entry.status]}`, detail);
+  }
   return node;
 }
 
@@ -62,7 +78,9 @@ document.getElementById("update-action").addEventListener("click", async () => {
     const response = await fetch(`/api/cards/${encodeURIComponent(incidentId)}/action`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ status }) });
     if (!response.ok) throw new Error("Update failed");
     const result = await response.json();
-    dashboard.incident_cards.find(card => card.incident_id === result.incident_id).action_status = result.action_status;
+    const card = dashboard.incident_cards.find(card => card.incident_id === result.incident_id);
+    card.action_status = result.action_status;
+    card.action_history = result.action_history;
     render(); document.getElementById("action-card").value = incidentId;
     feedback.textContent = `${incidentId} aksiyonu “${statusLabels[result.action_status]}” durumuna alındı.`;
   } catch {

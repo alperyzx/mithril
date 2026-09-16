@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import mimetypes
+from datetime import datetime, timezone
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -30,12 +31,23 @@ class DemoState:
             card["incident_id"]: card["action_status"]
             for card in self.report["incident_cards"]
         }
+        self.action_history = {
+            card["incident_id"]: [
+                {
+                    "status": "open",
+                    "at": None,
+                    "note": "Demo başlangıcı",
+                }
+            ]
+            for card in self.report["incident_cards"]
+        }
 
     def dashboard(self) -> dict[str, Any]:
         cards = []
         for card in self.report["incident_cards"]:
             rendered = dict(card)
             rendered["action_status"] = self.action_statuses[card["incident_id"]]
+            rendered["action_history"] = self.action_history[card["incident_id"]]
             cards.append(rendered)
         return {
             "input_alarm_count": self.report["input_alarm_count"],
@@ -52,7 +64,17 @@ class DemoState:
         if status not in VALID_ACTION_STATUSES:
             raise ValueError(status)
         self.action_statuses[incident_id] = status
-        return {"incident_id": incident_id, "action_status": status}
+        entry = {
+            "status": status,
+            "at": datetime.now(timezone.utc).isoformat(),
+            "note": "Operatör tarafından güncellendi",
+        }
+        self.action_history[incident_id].append(entry)
+        return {
+            "incident_id": incident_id,
+            "action_status": status,
+            "action_history": self.action_history[incident_id],
+        }
 
 
 def make_handler(state: DemoState) -> type[BaseHTTPRequestHandler]:
