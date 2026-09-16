@@ -55,7 +55,7 @@ function render() {
   setText("#card-count", incident_card_count);
   setText("#card-cap", max_incident_cards);
   setText("#noise-count", noise_total.toLocaleString("tr-TR"));
-  setText("#reduction", `%${((1 - incident_card_count / input_alarm_count) * 100).toFixed(1).replace(".", ",")}`);
+  setText("#reduction", `%${(noise_total / input_alarm_count * 100).toFixed(1).replace(".", ",")}`);
   const cards = document.getElementById("cards"); cards.replaceChildren(...incident_cards.map(renderCard));
   const selection = document.getElementById("action-card"); selection.replaceChildren(...incident_cards.map(card => new Option(`${card.incident_id} · ${card.action_owner}`, card.incident_id)));
   const reasons = document.getElementById("noise-reasons");
