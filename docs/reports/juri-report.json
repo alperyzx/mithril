@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-09-16T14:14:30.944507",
+  "timestamp": "2026-09-16T15:20:33.430126",
   "project": "ao-hackathon-2026-mithril",
   "compliance": {
-    "total_checks": 45,
-    "passed": 37,
-    "failed": 8,
-    "percentage": 82.2
+    "total_checks": 41,
+    "passed": 41,
+    "failed": 0,
+    "percentage": 100.0
   },
   "categories": {
     "Belgelendirme ve Hazırlık": [
@@ -183,8 +183,8 @@
       },
       {
         "rule": "En az 1 test dosyası",
-        "passed": false,
-        "details": "Test dosyası bulunamadı"
+        "passed": true,
+        "details": ""
       },
       {
         "rule": "docs/ klasörü var",
@@ -192,9 +192,9 @@
         "details": ""
       },
       {
-        "rule": "Makefile var",
-        "passed": false,
-        "details": "Makefile bulunamadı"
+        "rule": "Makefile var ve 'run' hedefi var",
+        "passed": true,
+        "details": ""
       }
     ],
     "AI Kullanımı ve Şeffaflık": [
@@ -205,8 +205,8 @@
       },
       {
         "rule": "prompts/ klasöründe örnek prompt var",
-        "passed": false,
-        "details": "Prompt dosyası bulunamadı"
+        "passed": true,
+        "details": "Bulundu: 1 prompt dosyası"
       }
     ],
     "Demo ve Deliverables": [
@@ -217,8 +217,8 @@
       },
       {
         "rule": "En az 1 ekran görüntüsü",
-        "passed": false,
-        "details": "Görüntü dosyası bulunamadı"
+        "passed": true,
+        "details": "Bulundu: 3 görüntü"
       }
     ]
   },
@@ -257,22 +257,15 @@
     "✓ Teknik Gerçeklik: src/ klasörü var",
     "✓ Teknik Gerçeklik: src/README.md var",
     "✓ Teknik Gerçeklik: tests/ klasörü var",
+    "✓ Teknik Gerçeklik: En az 1 test dosyası",
     "✓ Teknik Gerçeklik: docs/ klasörü var",
+    "✓ Teknik Gerçeklik: Makefile var ve 'run' hedefi var",
     "✓ AI Kullanımı ve Şeffaflık: Her AI aracı için model sürümü",
-    "✓ Demo ve Deliverables: demo/ klasörü var"
+    "✓ AI Kullanımı ve Şeffaflık: prompts/ klasöründe örnek prompt var",
+    "✓ Demo ve Deliverables: demo/ klasörü var",
+    "✓ Demo ve Deliverables: En az 1 ekran görüntüsü"
   ],
-  "failed_items": [
-    "✗ Teknik Gerçeklik: En az 1 test dosyası",
-    "  → Test dosyası bulunamadı",
-    "✗ Teknik Gerçeklik: Makefile var",
-    "  → Makefile bulunamadı",
-    "✗ AI Kullanımı ve Şeffaflık: prompts/ klasöründe örnek prompt var",
-    "  → Prompt dosyası bulunamadı",
-    "✗ Demo ve Deliverables: En az 1 ekran görüntüsü",
-    "  → Görüntü dosyası bulunamadı"
-  ],
-  "warnings": [
-    "Makefile bulunamadı - 'make run' komutunun çalışabilirliği doğrulanamadı"
-  ],
-  "status": "⚠ 82.22222222222221% COMPLIANCE"
+  "failed_items": [],
+  "warnings": [],
+  "status": "✓ PASSED"
 }

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mithril | Alarm Karar Merkezi</title>
+    <link rel="stylesheet" href="/dashboard.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">MITHRIL · S-A1 ALARM FIRTINASI</p>
+          <h1>Alarm selinden<br><span>net aksiyona.</span></h1>
+          <p class="hero-copy">Açıklanabilir korelasyon, gürültü denetimi ve tek ekranda aksiyon takibi.</p>
+        </div>
+        <div class="live-status"><span class="pulse"></span>Yerel demo · Canlı durum</div>
+      </header>
+
+      <section class="metrics" aria-label="İşleme özeti">
+        <article class="metric primary"><span>İşlenen alarm</span><strong id="processed-count">—</strong><small>Veri paketinin tamamı</small></article>
+        <article class="metric"><span>Olay kartı</span><strong id="card-count">—</strong><small>En fazla <span id="card-cap">15</span> kart sınırı</small></article>
+        <article class="metric"><span>Gürültü olarak ayrılan</span><strong id="noise-count">—</strong><small>Nedeni ile denetlenebilir</small></article>
+        <article class="metric"><span>İndirgeme</span><strong id="reduction">—</strong><small>Operatör odağı için</small></article>
+      </section>
+
+      <section class="section-heading">
+        <div><p class="eyebrow">TESPİT EDİLEN OLAYLAR</p><h2>3 kanıta dayalı olay kartı</h2></div>
+        <p class="hint">Her kart: hipotez · alternatif · kanıt · etki · aksiyon</p>
+      </section>
+      <section id="cards" class="cards" aria-live="polite"></section>
+
+      <section class="lower-grid">
+        <article class="panel action-panel">
+          <p class="eyebrow">CANLI AKSİYON TAKİBİ</p>
+          <h2>Bir kartın durumunu güncelle</h2>
+          <p>Demo sırasında seçili olayın ilk aksiyonunu açın, çalışmaya alın veya çözün. Durum yalnızca bu yerel oturumda bellekte tutulur.</p>
+          <label for="action-card">Olay kartı</label>
+          <select id="action-card"></select>
+          <label for="action-status">Aksiyon durumu</label>
+          <select id="action-status">
+            <option value="open">Açık</option>
+            <option value="in_progress">Çalışılıyor</option>
+            <option value="blocked">Engelli</option>
+            <option value="resolved">Çözüldü</option>
+          </select>
+          <button id="update-action" type="button">Durumu güncelle <span>→</span></button>
+          <p id="action-feedback" class="feedback" role="status"></p>
+        </article>
+        <article class="panel noise-panel">
+          <p class="eyebrow">GÜRÜLTÜ DENETİM İZİ</p>
+          <h2>Neden elendi?</h2>
+          <p>Olay kartına girmeyen her alarm bir neden koduyla sınıflanır; rastgele gizlenmez.</p>
+          <div id="noise-reasons" class="reason-list"></div>
+          <p class="audit-note">Kaynak: deterministik korelasyon çıktısındaki tüm alarm disposition kayıtları.</p>
+        </article>
+      </section>
+    </main>
+    <template id="card-template">
+      <article class="incident-card">
+        <div class="card-top"><span class="priority"></span><span class="confidence"></span></div>
+        <h3></h3><p class="time-range"></p>
+        <div class="hypothesis"><span>KÖK NEDEN HİPOTEZİ</span><p></p></div>
+        <div class="alternative"><span>ALTERNATİF</span><p></p></div>
+        <div class="detail-grid"><div><span>ETKİLENEN SERVİSLER</span><ul class="services"></ul></div><div><span>KANITLAR</span><ul class="evidence"></ul></div></div>
+        <div class="recommended-action"><span>İLK AKSİYON</span><p></p><footer><b class="owner"></b><em class="status"></em></footer></div>
+      </article>
+    </template>
+    <script src="/dashboard.js"></script>
+  </body>
+</html>
