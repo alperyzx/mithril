@@ -12,11 +12,12 @@ Etkinlik günü açıklanan senaryo kapsamında, yüksek hacimli operasyonel gü
 - Tüm 3.000 alarmı, envanter ve yönlü servis bağımlılıklarıyla doğrulama
 - Deterministik zaman/topoloji/etki korelasyonu ile üç kanıta dayalı olay kartı
 - Kök neden hipotezi, karşı olasılık, kanıtlar ve sahipli ilk aksiyon
-- Bellek içi aksiyon yaşam döngüsü ile canlı durum geçişi
+- Her hipotezi ham alarm kayıtları, zaman yoğunluğu ve dağılım görselleştirmeleriyle doğrulayan etkileşimli panel
 
 ## 3) Mimari (Kısa)
 - `src/alarm_core.py`: açıklanabilir, bağımlılıksız korelasyon motoru
 - `src/demo_server.py`: yerel canlı demo sunucusu
+- `src/demo_assets/`: olay kartları ve ham veri görselleştirmeleri
 - `docs/`: plan, fazlar, mimari
 - `prompts/`: kritik prompt kayıtları
 - `demo/`: ekran görüntüleri / video bağlantısı
@@ -34,4 +35,4 @@ Etkinlik günü açıklanan senaryo kapsamında, yüksek hacimli operasyonel gü
 
 ## 6) Bilinen Sınırlar
 - Korelasyon eşikleri S-A1 veri paketi için kalibre edilmiştir.
-- Aksiyon durumu bellek içidir; sunucu yeniden başlatıldığında sıfırlanır.
+- Ham veri doğrulama görünümü yalnız seçili olayın zaman/servis/topoloji penceresini gösterir; genel amaçlı bir sorgu arayüzü değildir.

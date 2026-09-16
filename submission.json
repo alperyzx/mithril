@@ -10,9 +10,9 @@
   },
   "project": {
     "title": "ao-hackathon-2026-mithril",
-    "one_liner": "Operasyonel gürültüyü anlamlı sinyallere dönüştüren ve aksiyon takibini kolaylaştıran prototip.",
-    "problem": "Hackathon senaryosunda gürültü içinden karar üretilebilir sinyal çıkarmak",
-    "status": "alpha"
+    "one_liner": "3.000 operasyon alarmını üç açıklanabilir olay kartına indirgeyen ve hipotezleri ham veriyle doğrulatan yerel demo.",
+    "problem": "Alarm fırtınasında kök neden, türev etki ve gürültüyü ayırarak nöbetçiye doğru müdahale sırasını göstermek.",
+    "status": "released"
   },
   "runtime": {
     "setup": "Python 3.12+ ve GNU Make; harici paket kurulumu gerekmez.",

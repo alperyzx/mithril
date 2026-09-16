@@ -1,16 +1,16 @@
 # ao-hackathon-2026-mithril
 
 ## Proje adı ve tek cümlelik özet
-**ao-hackathon-2026-mithril** — Operasyonel gürültüyü anlamlı sinyallere dönüştüren, aksiyon öneren hackathon prototipi.
+**ao-hackathon-2026-mithril** — 3.000 operasyon alarmını üç açıklanabilir olay kartına indirgeyen ve her hipotezi ham verisiyle doğrulatan yerel demo.
 
 ## Çözdüğünüz problem
 Etkinlik gününde açıklanan senaryo ve veri setinden operasyonel sinyalleri çıkarıp karar almayı hızlandırmak.
 
 ## Çözümünüzün nasıl çalıştığı
-1. Veriyi alır ve normalize eder.
-2. Gürültü/sinyal ayrımı yapar.
-3. Açıklanabilir aksiyon önerileri üretir.
-4. Aksiyonların takibini tek akışta gösterir.
+1. Tüm alarm kayıtlarını, host envanterini ve yönlü servis bağımlılıklarını doğrular.
+2. Zaman, topoloji ve bağımlılık kanıtlarıyla olayları korele eder; kart dışı kayıtları gerekçeli gürültü olarak sınıflandırır.
+3. Her kart için kök neden hipotezi, karşı olasılık, etki alanı ve ilk aksiyonu üretir.
+4. Seçilen kartın ham alarm verisini, zaman yoğunluğu ve dağılım görselleştirmeleriyle doğrulatır.
 
 ## Kurulum adımları
 
@@ -43,11 +43,12 @@ dosyaları kopyalanmaz veya değiştirilmez.
 1. Özet metrikte tüm veri paketinin `3000/3000` işlendiğini, olay kartı
 	sayısının `≤15` olduğunu gösterin.
 2. Üç olay kartında kök neden hipotezini, alternatif açıklamayı, kanıtları,
-	etkilenen servisleri ve aksiyon sahibi/durumunu açın.
-3. **Canlı Aksiyon Takibi** alanında bir kart seçin; durumu örneğin
-	**Çalışılıyor** veya **Çözüldü** olarak güncelleyin. Güncelleme aynı sayfada
-	görünür ve demo sunucusu çalıştığı sürece bellek içinde tutulur.
-4. **Gürültü Denetim İzi** alanında kart dışı alarmların neden kodları ile
+	etkilenen servisleri ve önerilen ilk aksiyonu açın.
+3. **Ham Veriyle Hipotez Doğrulama** alanından bir kart seçip ham veriyi
+	yükleyin. Zaman yoğunluğu, alarm tipi, servis ve veri merkezi/kabin
+	görselleştirmeleri karttaki hipotezi doğrular.
+4. Ham alarm tablosunda öncül ve türev etkileri gösterin; ardından **Gürültü
+	Denetim İzi** alanında kart dışı alarmların neden kodları ile
 	(izole düşük şiddet, topoloji kanıtı yok, tekrarlayan türev belirti, olay
 	penceresi dışında) sayıldığını gösterin.
 
@@ -56,8 +57,8 @@ dosyaları kopyalanmaz veya değiştirilmez.
 - Uygulama: `src/demo_server.py` (`http.server` tabanlı yerel sunucu)
 - Korelasyon: `src/alarm_core.py` (deterministik ve açıklanabilir kurallar)
 - Arayüz varlıkları: `src/demo_assets/`
-- Aksiyon durumu kalıcı değildir; sunucu yeniden başlatılınca `open` durumuna
-  döner. Bu, harici bağımlılığı olmayan canlı-demo geri dönüş yoludur.
+- Hipotez doğrulama paneli, kanonik senaryo verisinden anlık türetilen ham
+	alarm özetleri ve görselleştirmeleri gösterir.
 
 ## Kullanılan tüm AI araçları ve model sürümleri
 - GitHub Copilot — model: `SAKA gpt-5.6-terra`; kod, test, dokümantasyon ve korelasyon analizi desteği.
@@ -75,8 +76,9 @@ dosyaları kopyalanmaz veya değiştirilmez.
 ### Alarm karar merkezi
 ![Alarm karar merkezi](demo/dashboard-overview.png)
 
-### Canlı aksiyon durumu
-![Aksiyon durumu geçişi](demo/action-status-transition.png)
+### Ham veriyle hipotez doğrulama
+Ham veri doğrulama paneli yerel demoda etkileşimli olarak çalışır. Seçilen olay
+kartı için zaman yoğunluğu, alarm türü, servis ve DC/kabin dağılımı üretilir.
 
 ### Gürültü denetimi
 ![Gürültü denetimi](demo/noise-audit.png)
@@ -85,7 +87,7 @@ dosyaları kopyalanmaz veya değiştirilmez.
 - Deploy URL: Yerel demo — `http://127.0.0.1:8000` (`make run` sonrası).
 - Bilinen sınırlar:
 	- Korelasyon kuralları S-A1 senaryosundaki kanıt eşiklerine göre deterministiktir; farklı senaryolarda eşikler yapılandırılmalıdır.
-	- Aksiyon durumu bellek içinde tutulur ve sunucu yeniden başlatıldığında sıfırlanır.
+	- Ham veri görselleştirmeleri S-A1 senaryosuna aittir; farklı veri paketleri için yeni korelasyon kuralları ve eşikler gerekebilir.
 
 ## Takım
 - Alper

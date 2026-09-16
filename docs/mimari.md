@@ -1,13 +1,14 @@
 # mimari.md
 
 ## Bileşenler
-- Veri giriş katmanı
-- İşleme/sinyal motoru
-- Aksiyon ve çıktı katmanı
-- Demo arayüzü
+- Veri giriş ve doğrulama katmanı
+- Deterministik korelasyon/sinyal motoru
+- Olay kartı ve gürültü denetim çıktısı
+- Ham veri hipotez doğrulama API'si
+- Demo arayüzü ve veri görselleştirmeleri
 
 ## Akış
-Girdi -> Normalizasyon -> Sinyal Çıkarma -> Aksiyon -> Görselleştirme
+Girdi -> Normalizasyon -> Korelasyon -> Olay Kartı / Gürültü -> Ham Veri Doğrulama -> Görselleştirme
 
 ## S-A1 Deterministik Korelasyon Çekirdeği
 
@@ -23,4 +24,9 @@ Bağımlılık grafiği, ağ olayında aşağı akış semptomları bağlamak i�
 Her alarm, bir kartın olayı veya gerekçeli gürültü (`noise_reason`) olarak tek
 kez çıktılanır. Çekirdek harici paket veya LLM kullanmaz.
 
-Çalıştırma: `python3 -m src.alarm_core --output /tmp/s-a1-report.json`
+`src/demo_server.py`, seçili kart için yalnız ilgili zaman penceresi ve
+etkilenen servislerdeki ham alarmları sunar. Arayüz; dakika bazlı yoğunluk,
+alarm türü, servis ve veri merkezi/kabin dağılımlarını standart kütüphane ile
+görselleştirir. Bu görünüm hipotez kanıtını denetlenebilir kılar.
+
+Çalıştırma: `python3 -m src.alarm_core --output /tmp/s-a1-report.json` veya `make run`
