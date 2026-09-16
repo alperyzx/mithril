@@ -60,6 +60,22 @@ dosyaları kopyalanmaz veya değiştirilmez.
 - Hipotez doğrulama paneli, kanonik senaryo verisinden anlık türetilen ham
 	alarm özetleri ve görselleştirmeleri gösterir.
 
+## Kullanılan Python kütüphaneleri
+
+Proje harici Python paketi gerektirmez; yalnızca Python standart kütüphanesi
+kullanılır:
+
+- Veri ve korelasyon: `argparse`, `csv`, `json`, `collections`, `datetime`,
+	`pathlib`, `typing`
+- Yerel demo sunucusu: `http.server`, `mimetypes`, `urllib.parse`
+- Test: `unittest`
+
+## Geliştirme ve UI doğrulama aracı
+
+- **Playwright:** Yerel demonun tarayıcı üzerinden doğrulanması ve teslim ekran
+	görüntülerinin alınması için kullanıldı. Uygulamanın çalışma zamanı
+	bağımlılığı değildir; `make run` için ek paket kurulumu gerektirmez.
+
 ## Kullanılan tüm AI araçları ve model sürümleri
 - GitHub Copilot — model: `SAKA gpt-5.6-terra`; kod, test, dokümantasyon ve korelasyon analizi desteği.
 - Claude SAKA / Codex — ekip tarafından kullanılabilecek araçlar; bu repoda sürüm bilgisi kaydedilmeden bir model çıktısı ürün kararına bağlanmamıştır.

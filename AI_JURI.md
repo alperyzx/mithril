@@ -26,6 +26,8 @@ Etkinlik günü açıklanan senaryo kapsamında, yüksek hacimli operasyonel gü
 - GitHub Copilot (`SAKA gpt-5.6-terra`): kod üretimi, test, refactor ve dokümantasyon desteği
 - Kritik analiz istemi `prompts/prompt-01-scenario-analysis.md` altında kayıtlıdır.
 - Nihai korelasyon kararları deterministik kurallarla üretilir ve insan ekip tarafından doğrulanır.
+- Playwright, yerel demo arayüzünün doğrulanması ve teslim ekran görüntülerinin
+	alınması için geliştirme aşamasında kullanıldı; uygulamanın runtime bağımlılığı değildir.
 
 ## 5) Değerlendirme İçin Hızlı Kontrol
 - README zorunlu başlıklar tam mı?
