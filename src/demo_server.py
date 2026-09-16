@@ -54,10 +54,16 @@ class DemoState:
         type_counts: dict[str, int] = {}
         service_counts: dict[str, int] = {}
         source_counts: dict[str, int] = {}
+        minute_counts: dict[str, int] = {}
+        location_counts: dict[str, int] = {}
         for alarm in rows:
             type_counts[alarm["alarm_type"]] = type_counts.get(alarm["alarm_type"], 0) + 1
             service_counts[alarm["service"]] = service_counts.get(alarm["service"], 0) + 1
             source_counts[alarm["source_system"]] = source_counts.get(alarm["source_system"], 0) + 1
+            minute = alarm["timestamp"][11:16]
+            minute_counts[minute] = minute_counts.get(minute, 0) + 1
+            location = f"{alarm['tags']['veri_merkezi']} / {alarm['tags']['kabin']}"
+            location_counts[location] = location_counts.get(location, 0) + 1
         return {
             "incident_id": incident_id,
             "window": {"start_at": card["start_at"], "end_at": card["end_at"]},
@@ -65,6 +71,8 @@ class DemoState:
             "alarm_type_counts": dict(sorted(type_counts.items(), key=lambda item: (-item[1], item[0]))),
             "service_counts": dict(sorted(service_counts.items(), key=lambda item: (-item[1], item[0]))),
             "source_system_counts": dict(sorted(source_counts.items(), key=lambda item: (-item[1], item[0]))),
+            "minute_counts": dict(sorted(minute_counts.items())),
+            "location_counts": dict(sorted(location_counts.items(), key=lambda item: (-item[1], item[0]))),
             "sample_alarms": [
                 {
                     "timestamp": alarm["timestamp"],

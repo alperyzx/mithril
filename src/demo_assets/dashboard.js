@@ -11,6 +11,19 @@ const setText = (selector, text) => document.querySelector(selector).textContent
 const statusClass = (status) => `status status-${status}`;
 
 const countList = (title, values) => `<div><b>${title}</b><ul>${Object.entries(values).map(([name, count]) => `<li>${name}: <strong>${count}</strong></li>`).join("")}</ul></div>`;
+const topEntries = (values, limit = 6) => Object.entries(values).slice(0, limit);
+
+function horizontalBars(title, values, limit = 6) {
+  const entries = topEntries(values, limit);
+  const maximum = Math.max(...entries.map(([, count]) => count), 1);
+  return `<figure class="bar-chart"><figcaption>${title}</figcaption>${entries.map(([name, count]) => `<div class="bar-row"><span title="${name}">${name}</span><i><b style="width:${count / maximum * 100}%"></b></i><strong>${count}</strong></div>`).join("")}</figure>`;
+}
+
+function volumeChart(values) {
+  const entries = Object.entries(values);
+  const maximum = Math.max(...entries.map(([, count]) => count), 1);
+  return `<figure class="volume-chart"><figcaption>Zaman içindeki alarm yoğunluğu</figcaption><div class="volume-bars">${entries.map(([minute, count]) => `<div title="${minute}: ${count} alarm"><i style="height:${Math.max(8, count / maximum * 100)}%"></i><span>${minute.slice(3)}</span></div>`).join("")}</div></figure>`;
+}
 
 function renderCard(card) {
   const node = document.getElementById("card-template").content.firstElementChild.cloneNode(true);
@@ -64,7 +77,7 @@ document.getElementById("load-evidence").addEventListener("click", async () => {
     if (!response.ok) throw new Error("Evidence load failed");
     const evidence = await response.json();
     result.hidden = false;
-    result.innerHTML = `<p><strong>${evidence.raw_alarm_count}</strong> ham alarm · ${formatTime(evidence.window.start_at)} — ${formatTime(evidence.window.end_at)}</p><div class="evidence-grid">${countList("Alarm türleri", evidence.alarm_type_counts)}${countList("Servisler", evidence.service_counts)}${countList("Kaynak sistemler", evidence.source_system_counts)}</div><details><summary>İlk 12 ham alarmı göster</summary><table><thead><tr><th>Saat</th><th>Servis</th><th>Host</th><th>Tip</th><th>S</th></tr></thead><tbody>${evidence.sample_alarms.map(alarm => `<tr><td>${formatTime(alarm.timestamp)}</td><td>${alarm.service}</td><td>${alarm.host}</td><td>${alarm.alarm_type}</td><td>${alarm.severity}</td></tr>`).join("")}</tbody></table></details>`;
+    result.innerHTML = `<p><strong>${evidence.raw_alarm_count}</strong> ham alarm · ${formatTime(evidence.window.start_at)} — ${formatTime(evidence.window.end_at)}</p><div class="visualization-grid">${volumeChart(evidence.minute_counts)}${horizontalBars("En sık alarm türleri", evidence.alarm_type_counts)}${horizontalBars("En çok etkilenen servisler", evidence.service_counts)}${horizontalBars("Veri merkezi / kabin dağılımı", evidence.location_counts)}</div><div class="evidence-grid">${countList("Alarm türleri", evidence.alarm_type_counts)}${countList("Servisler", evidence.service_counts)}${countList("Kaynak sistemler", evidence.source_system_counts)}</div><details><summary>İlk 12 ham alarmı göster</summary><table><thead><tr><th>Saat</th><th>Servis</th><th>Host</th><th>Tip</th><th>S</th></tr></thead><tbody>${evidence.sample_alarms.map(alarm => `<tr><td>${formatTime(alarm.timestamp)}</td><td>${alarm.service}</td><td>${alarm.host}</td><td>${alarm.alarm_type}</td><td>${alarm.severity}</td></tr>`).join("")}</tbody></table></details>`;
     feedback.textContent = `${incidentId} hipotezi, ilgili ham alarm verisiyle yüklendi.`;
   } catch {
     feedback.textContent = "Ham veri yüklenemedi. Sunucunun çalıştığını kontrol edin.";

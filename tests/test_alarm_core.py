@@ -56,6 +56,8 @@ class DeterministicAlarmCoreTests(unittest.TestCase):
             self.assertTrue(evidence["alarm_type_counts"])
             self.assertTrue(evidence["service_counts"])
             self.assertTrue(evidence["source_system_counts"])
+            self.assertTrue(evidence["minute_counts"])
+            self.assertTrue(evidence["location_counts"])
             self.assertLessEqual(len(evidence["sample_alarms"]), 12)
 
 
